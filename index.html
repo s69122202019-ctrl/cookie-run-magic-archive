@@ -23,7 +23,128 @@
 <section id="quests" class="page"><h2>ภารกิจเวทมนตร์</h2><p class="muted">ภารกิจประจำวันเป็นชุดคงที่ ไม่รีเซ็ตอัตโนมัติ</p><div class="section"><h3>ภารกิจประจำวัน</h3><div id="daily" class="grid"></div></div><div class="section"><h3>ภารกิจระยะยาว</h3><div id="long" class="grid"></div></div></section>
 <section id="profile" class="page"><h2>โปรไฟล์นักสำรวจ</h2><div class="card section"><div class="row"><div class="avatar" id="profileAvatar">🍪</div><div><h3 id="profileName">ผู้เล่น</h3><div id="profileTitle" class="tag">นักสำรวจมือใหม่</div><div class="muted small" id="profileFrame">กรอบพื้นฐาน</div></div><button onclick="editProfile()">แก้ไขโปรไฟล์</button><button class="ghost" onclick="switchProfile()">เปลี่ยนโปรไฟล์</button></div><div class="stats section"><div class="stat">คะแนนรวม<b id="score">0</b></div><div class="stat">Level<b id="level">1</b></div><div class="stat">คุกกี้ที่เปิดดู<b id="viewCount">0 / 15</b></div><div class="stat">ภารกิจสำเร็จ<b id="questCount">0</b></div></div><p id="levelText" class="muted"></p><div class="bar"><i id="levelBar"></i></div><h3>คุกกี้ที่เคยเปิดดู</h3><div class="grid" id="visitedGrid"></div><h3>ประวัติภารกิจที่สำเร็จ</h3><div id="questHistory" class="muted"></div><h3>ประวัติ Level</h3><div id="levelHistory" class="muted"></div><h3>กรอบอวตาร</h3><div id="frames" class="toolbar"></div><h3>ฉายา</h3><div id="titles" class="toolbar"></div></div></section>
 <section id="rank" class="page"><h2>🏆 ตารางอันดับในอุปกรณ์นี้</h2><p class="muted">เรียงตามคะแนนรวมของแต่ละโปรไฟล์ที่บันทึกไว้ในเบราว์เซอร์นี้</p><div id="leaderboard" class="card"></div></section>
-<section id="graph" class="page"><h2>แผนผัง Graph Theory</h2><p class="muted">จุดยอดแทนคุกกี้และสมบัติ เส้นเชื่อมแสดงความสัมพันธ์ “คุกกี้เหมาะกับสมบัติ”</p><div class="card"><b>Adjacency List (JavaScript)</b><pre id="adjacency" style="white-space:pre-wrap;color:var(--cyan)"></pre><p>ตัวอย่าง Path: Cookie Run → Strawberry Cookie → Jelly Watch</p></div><h2 class="section">Tree Visualization</h2><div class="card tree"><div class="tree-node">Root: Cookie Run</div><div class="line"></div><div class="tree-children"><div class="tree-node">Parent: Cookie</div></div><div class="line"></div><div class="tree-children"><div class="tree-node">Child: Strawberry Cookie</div><div class="tree-node">Child: GingerBrave</div><div class="tree-node">Child: Wizard Cookie</div></div><div class="line"></div><div class="tree-children"><div class="tree-node">Leaf: Jelly Watch</div><div class="tree-node">Leaf: Treasure / Ability</div></div><p class="muted">ตัวอย่าง Root-to-Leaf Path: Cookie Run → Cookie → Strawberry Cookie → Jelly Watch</p></div></section>
+<section id="graph" class="page">
+  <h2>แผนผัง Graph Theory (Weighted Graph)</h2>
+  <p class="muted">
+    <strong>Vertex:</strong> คุกกี้ และ สมบัติ | 
+    <strong>Edge:</strong> เส้นความสัมพันธ์ความเหมาะสม | 
+    <strong>Weight:</strong> ค่าพลังงานผสาน (Synergy Points / Stamina)
+  </p>
+  <div class="card">
+    <b>Adjacency List with Weights (JavaScript)</b>
+    <pre id="adjacency" style="white-space:pre-wrap;color:var(--cyan)"></pre>
+    <div style="background:var(--panel2);padding:12px;border-radius:10px;border-left:4px solid var(--gold);margin-top:10px;">
+      <p style="margin:0 0 5px 0;"><strong>ตัวอย่าง Weighted Path:</strong> Strawberry Cookie ➔ Jelly Watch</p>
+      <p style="margin:0;color:var(--gold);font-size:0.9rem;">ค่าน้ำหนักบน Edge (Weight) = 10 แต้มพลังงานผสาน</p>
+    </div>
+  </div>
+<!-- 1. แผนผังเครือข่ายกราฟ (Graph Visualization พร้อม Weight) -->
+    <div class="card" style="margin-top: 1.5rem; text-align: center;">
+      <h3 style="color: var(--gold); margin-bottom: 0.5rem;">แผนผังเครือข่ายกราฟ (Graph Visualization)</h3>
+      <p class="muted small" style="margin-bottom: 1rem;">
+        วงกลมสีม่วง = คุกกี้ (Vertex) | วงกลมสีเขียว = สมบัติ (Vertex) | ตัวเลขบนเส้นเชื่อม = Weight กำกับ
+      </p>
+      
+      <div style="width: 100%; max-width: 720px; margin: auto; overflow-x: auto;">
+        <svg viewBox="0 0 700 420" style="width: 100%; height: auto; background: var(--panel2); border-radius: 16px; border: 1px solid var(--line);">
+          <defs>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#ffd36e" flood-opacity="0.3"/>
+            </filter>
+          </defs>
+
+          <!-- เส้นเชื่อม Edge พร้อมค่าน้ำหนัก Weight -->
+          <line x1="150" y1="90" x2="350" y2="70" stroke="#8de7e2" stroke-width="2.5" />
+          <rect x="235" y="65" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="250" y="78" fill="#ffd36e" font-size="11" text-anchor="middle">10</text>
+
+          <line x1="150" y1="90" x2="350" y2="180" stroke="#8de7e2" stroke-width="2.5" />
+          <rect x="235" y="125" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="250" y="138" fill="#ffd36e" font-size="11" text-anchor="middle">15</text>
+
+          <line x1="150" y1="210" x2="550" y2="70" stroke="#8de7e2" stroke-width="2.5" />
+          <rect x="330" y="125" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="345" y="138" fill="#ffd36e" font-size="11" text-anchor="middle">20</text>
+
+          <line x1="150" y1="210" x2="550" y2="180" stroke="#8de7e2" stroke-width="2.5" />
+          <rect x="330" y="185" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="345" y="198" fill="#ffd36e" font-size="11" text-anchor="middle">25</text>
+
+          <line x1="150" y1="330" x2="350" y2="300" stroke="#8de7e2" stroke-width="2.5" />
+          <rect x="235" y="302" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="250" y="315" fill="#ffd36e" font-size="11" text-anchor="middle">12</text>
+
+          <line x1="150" y1="330" x2="350" y2="70" stroke="#8de7e2" stroke-width="2" stroke-dasharray="4" />
+          <rect x="235" y="185" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="250" y="198" fill="#ffd36e" font-size="11" text-anchor="middle">18</text>
+
+          <line x1="550" y1="300" x2="350" y2="70" stroke="#8de7e2" stroke-width="2" stroke-dasharray="4" />
+          <rect x="435" y="170" width="30" height="18" rx="4" fill="#120f27" stroke="#ffd36e" />
+          <text x="450" y="183" fill="#ffd36e" font-size="11" text-anchor="middle">20</text>
+
+          <!-- จุดยอดคุกกี้ (Cookie Vertices) -->
+          <g filter="url(#glow)">
+            <circle cx="150" cy="90" r="32" fill="#3a245c" stroke="#ff9ec8" stroke-width="2.5" />
+            <text x="150" y="87" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Strawberry</text>
+            <text x="150" y="101" fill="#c9bddf" font-size="9" text-anchor="middle">Cookie</text>
+
+            <circle cx="150" cy="210" r="32" fill="#3a245c" stroke="#ff9ec8" stroke-width="2.5" />
+            <text x="150" y="207" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">GingerBrave</text>
+            <text x="150" y="221" fill="#c9bddf" font-size="9" text-anchor="middle">Cookie</text>
+
+            <circle cx="150" cy="330" r="32" fill="#3a245c" stroke="#ff9ec8" stroke-width="2.5" />
+            <text x="150" y="327" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">Wizard</text>
+            <text x="150" y="341" fill="#c9bddf" font-size="9" text-anchor="middle">Cookie</text>
+          </g>
+
+          <!-- จุดยอดสมบัติ (Treasure Vertices) -->
+          <g filter="url(#glow)">
+            <circle cx="350" cy="70" r="30" fill="#1b3d39" stroke="#8de7e2" stroke-width="2" />
+            <text x="350" y="67" fill="#8de7e2" font-size="10" font-weight="bold" text-anchor="middle">Jelly</text>
+            <text x="350" y="80" fill="#8de7e2" font-size="10" text-anchor="middle">Watch</text>
+
+            <circle cx="350" cy="180" r="30" fill="#1b3d39" stroke="#8de7e2" stroke-width="2" />
+            <text x="350" y="177" fill="#8de7e2" font-size="10" font-weight="bold" text-anchor="middle">Bear</text>
+            <text x="350" y="190" fill="#8de7e2" font-size="10" text-anchor="middle">Jellies</text>
+
+            <circle cx="350" cy="300" r="30" fill="#1b3d39" stroke="#8de7e2" stroke-width="2" />
+            <text x="350" y="297" fill="#8de7e2" font-size="10" font-weight="bold" text-anchor="middle">Magic</text>
+            <text x="350" y="310" fill="#8de7e2" font-size="10" text-anchor="middle">Scroll</text>
+
+            <circle cx="550" cy="70" r="30" fill="#1b3d39" stroke="#8de7e2" stroke-width="2" />
+            <text x="550" y="67" fill="#8de7e2" font-size="10" font-weight="bold" text-anchor="middle">Treasure</text>
+            <text x="550" y="80" fill="#8de7e2" font-size="10" text-anchor="middle">Compass</text>
+
+            <circle cx="550" cy="180" r="30" fill="#1b3d39" stroke="#8de7e2" stroke-width="2" />
+            <text x="550" y="177" fill="#8de7e2" font-size="10" font-weight="bold" text-anchor="middle">Energy</text>
+            <text x="550" y="190" fill="#8de7e2" font-size="10" text-anchor="middle">Scale</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 2. แผนผัง Tree Visualization -->
+    <h2 class="section">Tree Visualization</h2>
+    <div class="card tree">
+      <div class="tree-node">Root: Cookie Run</div>
+      <div class="line"></div>
+      <div class="tree-children">
+        <div class="tree-node">Parent: Cookie</div>
+      </div>
+      <div class="line"></div>
+      <div class="tree-children">
+        <div class="tree-node">Child: Strawberry Cookie</div>
+        <div class="tree-node">Child: GingerBrave</div>
+        <div class="tree-node">Child: Wizard Cookie</div>
+      </div>
+      <div class="line"></div>
+      <div class="tree-children">
+        <div class="tree-node">Leaf: Jelly Watch</div>
+        <div class="tree-node">Leaf: Treasure / Ability</div>
+      </div>
+      <p class="muted">ตัวอย่าง Root-to-Leaf Path: Cookie Run → Cookie → Strawberry Cookie → Jelly Watch</p>
+    </div>
+</section>
 <section id="settings" class="page"><h2>ตั้งค่า</h2><div class="card"><p><label><input type="checkbox" id="music" checked onchange="saveSettings()"> เพลงพื้นหลัง</label></p><p><label><input type="checkbox" id="effects" checked onchange="saveSettings()"> เสียงและเอฟเฟกต์เวทมนตร์</label></p><p><label><input type="checkbox" id="dark" checked onchange="toggleTheme()"> โหมดมืด</label></p><button onclick="tutorial()">เปิดวิธีใช้งาน</button><button class="ghost" onclick="logout()">ออกจากโปรไฟล์</button></div></section>
 </main><div class="foot">A student project prototype • Graph Theory & Tree • บันทึกข้อมูลด้วย Local Storage</div></div>
 <div id="modal" class="modal"><div class="modalbox"><div style="font-size:42px">✨</div><h2 id="modalTitle">ยินดีด้วย!</h2><p id="modalText"></p><button class="gold" onclick="closeModal()">รับทราบ</button></div></div>
@@ -46,7 +167,32 @@ const cookies=[
 ['Wind Archer Cookie','Legendary','🏹','โจมตีด้วยพลังสายลม','นักธนูแห่งสายลม','ยิงพลังสายลมเก็บคะแนน']
 ];
 const treasures=['Jelly Watch','Bear Jellies','Treasure Compass','Magic Scroll','Coin Purse','Energy Scale'];
-const graph={'Strawberry Cookie':['Jelly Watch','Bear Jellies'],'GingerBrave':['Treasure Compass','Energy Scale'],'Wizard Cookie':['Magic Scroll','Jelly Watch'],'Moonlight Cookie':['Magic Scroll','Bear Jellies'],'Wind Archer Cookie':['Treasure Compass','Energy Scale'],'Pirate Cookie':['Coin Purse','Jelly Watch']};
+const graph = {
+  "Strawberry Cookie": [
+    { target: "Jelly Watch", weight: 10 },
+    { target: "Bear Jellies", weight: 15 }
+  ],
+  "GingerBrave": [
+    { target: "Treasure Compass", weight: 20 },
+    { target: "Energy Scale", weight: 25 }
+  ],
+  "Wizard Cookie": [
+    { target: "Magic Scroll", weight: 12 },
+    { target: "Jelly Watch", weight: 18 }
+  ],
+  "Moonlight Cookie": [
+    { target: "Magic Scroll", weight: 30 },
+    { target: "Bear Jellies", weight: 22 }
+  ],
+  "Wind Archer Cookie": [
+    { target: "Treasure Compass", weight: 16 },
+    { target: "Energy Scale", weight: 28 }
+  ],
+  "Pirate Cookie": [
+    { target: "Coin Purse", weight: 14 },
+    { target: "Jelly Watch", weight: 20 }
+  ]
+};
 const daily=[['เปิดดูคุกกี้ 1 ตัว','easy',10],['เปิดดูคุกกี้ 3 ตัว','easy',10],['ค้นหาคุกกี้ 1 ครั้ง','easy',10],['เปิดดูสมบัติ 1 รายการ','easy',10],['ดูรายละเอียดคุกกี้ 2 ตัว','easy',10],['เปิดดูคุกกี้ 5 ตัว','medium',20],['ค้นหาคุกกี้ 3 ครั้ง','medium',20],['สำรวจความสัมพันธ์คุกกี้–สมบัติ','medium',20],['เปิดดูคุกกี้ 10 ตัว','hard',30],['ดูคุกกี้และสมบัติครบชุด','hard',30]];
 const long=[['เปิดดูคุกกี้ครบ 15 ตัว',15],['ทำภารกิจสำเร็จ 5 รายการ',50],['สำรวจหน้า Graph & Tree',25]];
 let profiles=JSON.parse(localStorage.getItem('cookieProfiles')||'[]'), current=localStorage.getItem('cookieCurrent')||'';
@@ -57,7 +203,7 @@ function save(){localStorage.setItem('cookieProfiles',JSON.stringify(profiles));
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='profile')renderProfile();if(id==='rank')renderRank();if(id==='quests')renderQuests();if(id==='cookies')renderCookies();window.scrollTo(0,0)}
 function renderCookies(){let q=(document.getElementById('search')?.value||'').toLowerCase(),f=document.getElementById('filter')?.value||'ทั้งหมด';let list=cookies.filter(c=>(f==='ทั้งหมด'||c[1]===f)&&c[0].toLowerCase().includes(q));document.getElementById('cookieGrid').innerHTML=list.map(c=>`<div class="card cookie" onclick="openCookie('${c[0]}')"><div class="cookie-art">${c[2]}</div><h3>${c[0]}</h3><span class="tag">${c[1]}</span><p class="small muted">${c[3]}</p></div>`).join('')||'<p>ไม่พบคุกกี้</p>'}
-function openCookie(name){let c=cookies.find(x=>x[0]===name);if(!player.views.includes(name)){player.views.push(name);addScore(15)}document.getElementById('detailContent').innerHTML=`<div class="card"><div class="detail-art">${c[2]}</div><h2>${c[0]} <span class="tag">${c[1]}</span></h2><h3>ความสามารถ</h3><p>${c[3]}</p><h3>ประวัติ</h3><p>${c[4]}</p><h3>วิธีปลดล็อก</h3><p>สำรวจในคลังคุกกี้และทำความเข้าใจความสามารถ</p><h3>สมบัติที่เหมาะสม</h3><div class="toolbar">${(graph[name]||['Jelly Watch','Bear Jellies']).map(t=>`<button onclick="viewTreasure('${t}')">🪄 ${t}</button>`).join('')}</div><p class="muted small">เปิดดูคุกกี้ครั้งแรกได้รับ 15 คะแนน</p></div>`;save();showPage('detail')}
+function openCookie(name){let c=cookies.find(x=>x[0]===name);if(!player.views.includes(name)){player.views.push(name);addScore(15)}document.getElementById('detailContent').innerHTML=`<div class="card"><div class="detail-art">${c[2]}</div><h2>${c[0]} <span class="tag">${c[1]}</span></h2><h3>ความสามารถ</h3><p>${c[3]}</p><h3>ประวัติ</h3><p>${c[4]}</p><h3>วิธีปลดล็อก</h3><p>สำรวจในคลังคุกกี้และทำความเข้าใจความสามารถ</p><h3>สมบัติที่เหมาะสม</h3><div class="toolbar">${(graph[name]||[{target:'Jelly Watch',weight:10},{target:'Bear Jellies',weight:15}]).map(item=>`<button onclick="viewTreasure('${item.target}')">🪄 ${item.target} (Weight: ${item.weight})</button>`).join('')}</div><p class="muted small">เปิดดูคุกกี้ครั้งแรกได้รับ 15 คะแนน</p></div>`;save();showPage('detail')}
 function viewTreasure(t){player.treasureViews++;addScore(5);modal('เปิดดูสมบัติ',`คุณดู ${t} ได้รับ 5 คะแนน`);save()}
 function addScore(n){player.score+=n;save();checkLevel();renderProfile()}
 function threshold(l){return l<=10?100+(l-1)*50:550+(l-11)*50}
